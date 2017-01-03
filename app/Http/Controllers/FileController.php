@@ -22,14 +22,14 @@ class FileController extends Controller {
 
         $files = File::get(['id','name','mime_type','content']);
 
-        if (!$files) {
-            return resonse()->json([
+        if (!$files->count()) {
+            return response()->json([
                 'error' => ['message' => 'There are not files stored!']
                 ],404);
         }
 
         return response()->json([
-                'message' => $files
+                'data' => $files
             ],200);
         
     }
@@ -68,12 +68,12 @@ class FileController extends Controller {
 
 
             $filename = $request->file->getClientOriginalName();
-            $path = $request->file->storeAs('public/images',$filename);
+            $path = $request->file->storeAs('public/files',$filename);
 
             $file = new File();
             $file->name = $filename;
             $file->path = $path;
-            $file->mime = $request->file->getMimeType();
+            $file->mime_type = $request->file->getMimeType();
             $file->content = $content;
             $file->save();
 
