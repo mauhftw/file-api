@@ -17,7 +17,6 @@ class FileController extends Controller {
 
 
 
-
     public function index() {
 
         $files = File::get(['id','name','mime_type','content']);
@@ -38,7 +37,7 @@ class FileController extends Controller {
     public function store(Request $request) {
 
         $validator = Validator::make($request->all(),[
-                'file' => 'required|file|unique:files,content',
+                'file' => 'required|file',
             ]);
 
 
@@ -57,7 +56,18 @@ class FileController extends Controller {
             $file = $request->file->path();
             $content = hash_file($hash_function,$file);
 
+            // Has the same filename
+            $filename_exist = File::where('name',$request->file->getClientOriginalName())
+                                  ->first();
 
+            if ($filename_exist) {
+                return response()->json([
+                    'error' => ['message' => 'The filename you are providing is already in use!']
+                    ],400);    
+            }
+
+
+            // Has the same content
             $file_exist = File::where('content',$content)->first();
 
             if ($file_exist) {
@@ -94,17 +104,37 @@ class FileController extends Controller {
 
     }
 
+    //by_name
+    public function destroy($id) {      
 
-    public function destroy($id) {
+
+        $file = File::find($id);
+
+        if (!$file) {
+            return response()->json([
+                'error' => ['message' => 'Corrupt file, please try again!']
+                ],400);
+        }
+
+
+        $file->delete();
+
+        return response()->json([
+               'message' => 'The file has been removed successfully!'
+                ],200);
+
+
 
        
     }
 
-    public function download($id) {
-
+    public function download($id) {     //name
+        
 
     }
 
 
 
 }
+
+
