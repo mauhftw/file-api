@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\File;
+use Storage;
+
 
 class FileController extends Controller {
 
@@ -55,9 +57,10 @@ class FileController extends Controller {
 
             $file = $request->file->path();
             $content = hash_file($hash_function,$file);
+            $filename_raw = pathinfo($request->file->getClientOriginalName(),PATHINFO_FILENAME);
 
             // Has the same filename
-            $filename_exist = File::where('name',$request->file->getClientOriginalName())
+            $filename_exist = File::where('name',$filename_raw)
                                   ->first();
 
             if ($filename_exist) {
@@ -72,16 +75,17 @@ class FileController extends Controller {
 
             if ($file_exist) {
                 return response()->json([
-                    'error' => ['message' => 'The file content already exist!']
+                    'error' => ['message' => 'The content you are trying to upload already exist in file: '.$file_exist->name]
                     ],400);
             }
 
 
+            //filename with extension
             $filename = $request->file->getClientOriginalName();
             $path = $request->file->storeAs('public/files',$filename);
 
             $file = new File();
-            $file->name = $filename;
+            $file->name = $filename_raw;
             $file->path = $path;
             $file->mime_type = $request->file->getMimeType();
             $file->content = $content;
@@ -107,29 +111,47 @@ class FileController extends Controller {
     //by_name
     public function destroy($id) {      
 
-
         $file = File::find($id);
 
         if (!$file) {
             return response()->json([
-                'error' => ['message' => 'Corrupt file, please try again!']
-                ],400);
+                'error' => ['message' => 'File not found!']
+                ],404);
         }
 
 
+        Storage::delete($file->path);
         $file->delete();
+
+
 
         return response()->json([
                'message' => 'The file has been removed successfully!'
                 ],200);
 
 
-
        
     }
+    //download or show?
+    public function download($id) {     //name 
 
-    public function download($id) {     //name
-        
+        $file = File::find($id);
+
+        if (!$file) {
+            return response()->json([
+                'error' => ['message' => 'File not found!']
+                ],404);
+        }
+
+
+
+        $path = storage_path().'/app'.'/'.$file->path;
+
+        //return response()->download($path);
+        /*return response()->json([
+                'data' => $file
+            ],200);  */    
+
 
     }
 
