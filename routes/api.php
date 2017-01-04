@@ -23,7 +23,7 @@ Route::group(['prefix' => 'v1'], function () {
 	Route::get('auth/me', 'Api\AuthController@getAuthenticatedUser');
 	Route::post('auth', 'Api\AuthController@authenticate');
 
-	Route::resource('files','FileController',['only' => ['index','store','destroy']]);
+	Route::resource('files','FileController',['only' => ['index','store','destroy','show']]);
 	Route::get('files/{file}', 'FileController@download')->name('files.download');
 
 });

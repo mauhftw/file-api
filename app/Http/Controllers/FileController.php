@@ -50,18 +50,16 @@ class FileController extends Controller {
         }
 
 
-
         if ($request->file('file')->isValid()) {
             
             $hash_function = 'sha256';
 
             $file = $request->file->path();
             $content = hash_file($hash_function,$file);
-            $filename_raw = pathinfo($request->file->getClientOriginalName(),PATHINFO_FILENAME);
+            $filename = $request->file->getClientOriginalName();
 
             // Has the same filename
-            $filename_exist = File::where('name',$filename_raw)
-                                  ->first();
+            $filename_exist = File::where('name',$filename)->first();
 
             if ($filename_exist) {
                 return response()->json([
@@ -80,12 +78,10 @@ class FileController extends Controller {
             }
 
 
-            //filename with extension
-            $filename = $request->file->getClientOriginalName();
             $path = $request->file->storeAs('public/files',$filename);
 
             $file = new File();
-            $file->name = $filename_raw;
+            $file->name = $filename;
             $file->path = $path;
             $file->mime_type = $request->file->getMimeType();
             $file->content = $content;
@@ -108,7 +104,6 @@ class FileController extends Controller {
 
     }
 
-    //by_name
     public function destroy($id) {      
 
         $file = File::find($id);
@@ -124,33 +119,27 @@ class FileController extends Controller {
         $file->delete();
 
 
-
         return response()->json([
                'message' => 'The file has been removed successfully!'
                 ],200);
 
-
        
     }
-    //download or show?
-    public function download($id) {     //name 
+  
+
+    public function download($id) {     
 
         $file = File::find($id);
+        $path = storage_path().'/app'.'/'.$file->path;
 
-        if (!$file) {
+        if (!$file || !$path ) {
             return response()->json([
                 'error' => ['message' => 'File not found!']
                 ],404);
         }
 
 
-
-        $path = storage_path().'/app'.'/'.$file->path;
-
-        //return response()->download($path);
-        /*return response()->json([
-                'data' => $file
-            ],200);  */    
+        return response()->download($path);
 
 
     }
