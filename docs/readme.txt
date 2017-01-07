@@ -28,11 +28,11 @@ Index
 
 Write a program that provides HTTP API to store and retrieve files. Features:
 
-	- Upload a new file
-	- Retrieve an uploaded file by name
-	- Delete an uploaded file by name
-	- Bonus point: Include a nix module
-	- More bonus point: If multiple files have similar contents, reuse the contents somehow to save space
+    - Upload a new file
+    - Retrieve an uploaded file by name
+    - Delete an uploaded file by name
+    - Bonus point: Include a nix module
+    - More bonus point: If multiple files have similar contents, reuse the contents somehow to save space
 
 
 //---------------------------------
@@ -42,11 +42,11 @@ Write a program that provides HTTP API to store and retrieve files. Features:
 
 This is a REST API for managing files. Before using the proper API, user must authenticate via credentials and use a valid token (JWT)
 
-Basically this application uploads a new file, retrieves an uploaded file and deletes an uploaded file. In order to save some disk space, the application detects name, mime_type and the file's content (hashing it's content). If file content is identically to some other file stored in database , API rejects user's file (Sends a json response "The content you're tryng to upload already exist").
+Basically this application uploads a new file, retrieves an uploaded file and deletes an uploaded file. In order to save some disk space, the application detects name, mime_type and the file's content (hashing it's content). If file content is identically to some other file stored in database , API rejects user's file (Sends a json response "The content you're trying to upload already exist").
 
-Another vague approch to fulfil this design requirment, could be opening every file chuncking lines and comparing those against all stored files, save the line's position in db and reconstruct every file. But file will be different to user's original file and this method would use a lot of computing resources due to database querys and opening multiple files (syscalls).
+Another vague approach to fulfill this design requirement, could be opening every file chunking lines and comparing those against all stored files, save the line's position in db and reconstruct every file. But file will be different to user's original file and this method would use a lot of computing resources due to database querys and opening multiple files (syscalls).
 
-I know this is not the best way to provide reuse of content. I think it could be done with some other filtering and indexing tools like elastic search or map reduce framework. But unfortunatelly due to some time issues, i could't finish my research.
+I know this is not the best way to provide reuse of content. I think it could be done with some other filtering and indexing tools like elastic search or map reduce framework. But unfortunately due to some time issues, i couldn't finish my research.
 
 Requirements explicit says: "delete and retrieve files by name". Actually I based my API on Google's Drive API structure and Google's Drive "retrieves files by id", so I developed my app this way. Otherwise I design other routes for retrieving and deleting files by id as you request.
 
@@ -71,10 +71,10 @@ To install the API, follow the instructions:
 - Please configure your web server to project's document root (public folder).
 - Copy an .env file form .env_example.
 - Run these commands:
-	- php artisan key:generate
-	- php artisan migrate --seed
+    - php artisan key:generate
+    - php artisan migrate --seed
     - php artisan storage:link
-	- composer install
+    - composer install
 
 
 //----------------------------------
@@ -85,17 +85,17 @@ To install the API, follow the instructions:
 API is conformed by 8 routes:
 
 +--------+--------------------------------+--------------------------------------------------+
-| Method | 			URI                   |                 ACTION 							 |
+| Method |          URI                   |                 ACTION                           |
 +--------+----------+---------------------+--------------------------------------------------+
 | POST   | api/v1/auth                    | User send credentials, app returns a valid token |
-| GET    | api/v1/auth/me   			  |	Shows user's information					     |
-| GET    | api/v1/files     			  |	Shows all the files stored			             |
-| POST   | api/v1/files 				  |	Uploads a certain file                           |
-| GET    | api/v1/files/{file}            |	Retrieves a certain file by id                   |
-| DELETE | api/v1/files/{file}			  | Deletes a certain file by id					 |
-+--------|--------------------------------+	-------------------------------------------------+
-| GET    | api/v1/fil3s/{fil3} 			  |	Retrieves a certain file by name                 |
-| DELETE | api/v1/fil3s/{fil3} 			  |	Deletes a certain file by name					 |
+| GET    | api/v1/auth/me                 | Shows user's information                         |
+| GET    | api/v1/files                   | Shows all the files stored                       |
+| POST   | api/v1/files                   | Uploads a certain file                           |
+| GET    | api/v1/files/{file}            | Retrieves a certain file by id                   |
+| DELETE | api/v1/files/{file}            | Deletes a certain file by id                     |
++--------|--------------------------------+ -------------------------------------------------+
+| GET    | api/v1/fil3s/{fil3}            | Retrieves a certain file by name                 |
+| DELETE | api/v1/fil3s/{fil3}            | Deletes a certain file by name                   |
 +--------|--------------------------------+--------------------------------------------------+
 
 For more detailed information, please read "6. API DOCS"
@@ -166,8 +166,7 @@ Response: All stored files.
     ]
 }
 
-Note: Use the other methods with the corresponding parameters to performe the desired actions
+Note: Use the other methods with the corresponding parameters to perform the desired actions
 
 // -------------------------------------
-
 
