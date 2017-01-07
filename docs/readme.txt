@@ -42,13 +42,13 @@ Write a program that provides HTTP API to store and retrieve files. Features:
 
 This is a REST API for managing files. Before using the proper API, user must authenticate via credentials and use a valid token (JWT)
 
-Basically this application uploads a new file, retrieves an uploaded file and deletes an uploaded file. In order to save some disk space, the application detects name, mime_type and the file's content (hashing it's content). If file content is identically to some other file stored in database , API rejects user's file (Sends a json response "The content you're trying to upload already exist").
+Basically this application uploads, lists and deletes an uploaded file. In order to save some disk space, the application detects name, mime_type and the file's content (hashing it's content). If file content is identically to some other file stored in database , API rejects user's file (Sends a json response "The content you're trying to upload already exist").
 
-Another vague approach to fulfill this design requirement, could be opening every file chunking lines and comparing those against all stored files, save the line's position in db and reconstruct every file. But file will be different to user's original file and this method would use a lot of computing resources due to database querys and opening multiple files (syscalls).
+Another vague approach to fulfill this design requirement, could be opening every file chunking lines and comparing those against all stored files, save the line's position in db and reconstruct every file. But file will be different to user's original file and this method would use a lot of computing resources due to database querys,opening multiple files and comparing them.
 
 I know this is not the best way to provide reuse of content. I think it could be done with some other filtering and indexing tools like elastic search or map reduce framework. But unfortunately due to some time issues, i couldn't finish my research.
 
-Requirements explicit says: "delete and retrieve files by name". Actually I based my API on Google's Drive API structure and Google's Drive "retrieves files by id", so I developed my app this way. Otherwise I design other routes for retrieving and deleting files by id as you request.
+Requirements explicit says: "delete and retrieve files by name". Actually I based my API on Google Drive API structure and Google Drive "retrieves files by id", so I developed my app this way. Otherwise I design other routes for retrieving and deleting files by id as you request.
 
 
 //----------------------------------
