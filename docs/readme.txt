@@ -4,6 +4,8 @@
 
 
 Author: Mauricio Ashimine
+E-mail: maashimine@gmail.com
+Github: https://github.com/mauhftw
 ---------------------------------
 
 
