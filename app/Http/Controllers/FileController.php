@@ -52,7 +52,7 @@ class FileController extends Controller {
 
         if ($request->file('file')->isValid()) {
             
-            $hash_function = 'sha256';
+            $hash_function = config('custom.hash_function');  
 
             $file = $request->file->path();
             $content = hash_file($hash_function,$file);
@@ -66,7 +66,6 @@ class FileController extends Controller {
                     'error' => ['message' => 'The filename is already in use']
                     ],422);    
             }
-
 
             // Has the same content
             $file_exist = File::where('content',$content)->first();
@@ -90,7 +89,6 @@ class FileController extends Controller {
             return response()->json([
                     'message' => 'The file has been uploaded successfully'
                 ],200);
-
 
 
         } else {
@@ -118,7 +116,6 @@ class FileController extends Controller {
         Storage::delete($file->path);
         $file->delete();
 
-
         return response()->json([
                'message' => 'The file has been removed successfully'
                 ],200);
@@ -131,7 +128,6 @@ class FileController extends Controller {
 
         $file = File::find($id);
         
-
         if (!$file) {
             return response()->json([
                 'error' => ['message' => 'File not found']
@@ -149,10 +145,7 @@ class FileController extends Controller {
 
         return response()->download($path);
 
-
     }
-
-
 
 
 
@@ -169,10 +162,8 @@ class FileController extends Controller {
                 ],404);
         }
 
-
         Storage::delete($file->path);
         $file->delete();
-
 
         return response()->json([
                'message' => 'The file has been removed successfully'
@@ -185,7 +176,6 @@ class FileController extends Controller {
     public function downloadByName($name) {     
 
         $file = File::where('name',$name)->first();
-        
 
         if (!$file) {
             return response()->json([
@@ -206,17 +196,6 @@ class FileController extends Controller {
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
