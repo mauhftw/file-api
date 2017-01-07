@@ -21,11 +21,11 @@ class FileController extends Controller {
 
     public function index() {
 
-        $files = File::get(['id','name','mime_type','content']);
+        $files = File::get(['id','name','mime_type']);
 
         if (!$files->count()) {
             return response()->json([
-                'error' => ['message' => 'There are not files stored!']
+                'error' => ['message' => 'There are not stored files']
                 ],404);
         }
 
@@ -63,8 +63,8 @@ class FileController extends Controller {
 
             if ($filename_exist) {
                 return response()->json([
-                    'error' => ['message' => 'The filename you are providing is already in use!']
-                    ],400);    
+                    'error' => ['message' => 'The filename is already in use']
+                    ],422);    
             }
 
 
@@ -73,8 +73,8 @@ class FileController extends Controller {
 
             if ($file_exist) {
                 return response()->json([
-                    'error' => ['message' => 'The content you are trying to upload already exist in file: '.$file_exist->name]
-                    ],400);
+                    'error' => ['message' => 'The content already exist in file: '.$file_exist->name]
+                    ],409);
             }
 
 
@@ -88,7 +88,7 @@ class FileController extends Controller {
             $file->save();
 
             return response()->json([
-                    'message' => 'The file has been uploaded successfully!'
+                    'message' => 'The file has been uploaded successfully'
                 ],200);
 
 
@@ -96,8 +96,8 @@ class FileController extends Controller {
         } else {
 
             return response()->json([
-                    'error' => ['message' => 'Corrupt file, please try again!']
-                    ],400);
+                    'error' => ['message' => 'Corrupt file, please try again']
+                    ],419);
         }
 
 
@@ -110,7 +110,7 @@ class FileController extends Controller {
 
         if (!$file) {
             return response()->json([
-                'error' => ['message' => 'File not found!']
+                'error' => ['message' => 'File not found']
                 ],404);
         }
 
@@ -120,7 +120,7 @@ class FileController extends Controller {
 
 
         return response()->json([
-               'message' => 'The file has been removed successfully!'
+               'message' => 'The file has been removed successfully'
                 ],200);
 
        
@@ -130,11 +130,19 @@ class FileController extends Controller {
     public function download($id) {     
 
         $file = File::find($id);
+        
+
+        if (!$file) {
+            return response()->json([
+                'error' => ['message' => 'File not found']
+                ],404);
+        }
+
         $path = storage_path().'/app'.'/'.$file->path;
 
-        if (!$file || !$path ) {
+        if (!$path) {
             return response()->json([
-                'error' => ['message' => 'File not found!']
+                'error' => ['message' => 'File not found']
                 ],404);
         }
 
@@ -143,6 +151,72 @@ class FileController extends Controller {
 
 
     }
+
+
+
+
+
+
+//--------byName
+
+    public function deleteByName($name) {      
+
+        $file = File::where('name',$name)->first();
+
+        if (!$file) {
+            return response()->json([
+                'error' => ['message' => 'File not found']
+                ],404);
+        }
+
+
+        Storage::delete($file->path);
+        $file->delete();
+
+
+        return response()->json([
+               'message' => 'The file has been removed successfully'
+                ],200);
+
+       
+    }
+  
+
+    public function downloadByName($name) {     
+
+        $file = File::where('name',$name)->first();
+        
+
+        if (!$file) {
+            return response()->json([
+                'error' => ['message' => 'File not found']
+                ],404);
+        }
+
+        $path = storage_path().'/app'.'/'.$file->path;
+
+        if (!$path) {
+            return response()->json([
+                'error' => ['message' => 'File not found']
+                ],404);
+        }
+
+
+        return response()->download($path);
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
