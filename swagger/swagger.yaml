@@ -1,0 +1,336 @@
+swagger: '2.0'
+info:
+  title: Zalora REST API
+  description: A REST API for managing files.-
+  version: "1.0"
+# the domain of the service
+host: zalora.app
+# array of all schemes that your API supports
+schemes:
+  - http
+# will be prefixed to all paths
+basePath: /api/v1
+produces:
+  - application/json
+paths:
+  /auth:
+    post:
+      summary: User Authentication
+      description: |
+        The user logs with their credentials. System returns a valid Token (JWT)
+      parameters:
+        - name: email
+          in: formData
+          description: User's email
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: User's password
+          required: true
+          type: string
+      tags:
+        - Auth
+      responses:
+        200:
+          description: Token (JWT)
+          schema:
+              type: object
+              properties:
+                token:
+                  type: string
+        401:
+          description: Invalid Credentials
+          schema:
+            type: object
+            properties:
+                message: 
+                  type: string
+                
+  /auth/me:
+    get:
+      summary: User Profile
+      description: The User Profile endpoint returns information about user that has authorized with the application.
+      parameters:
+        - name: token
+          in: query
+          description: User's valid token
+          required: true
+          type: string
+
+      tags:
+        - Auth
+      responses:
+        200:
+          description: User's profile info
+          schema:
+            $ref: '#/definitions/User'
+        404:
+          description: User not found
+          schema:
+            type: object
+            properties:
+              message:
+                type: string 
+                description: User not found
+            
+  /files:
+    get:
+      summary: List files
+      description: Returns all stored files.
+      parameters:
+        - name: token
+          in: query
+          description: User's valid token
+          required: true
+          type: string
+      tags:
+        - Files
+      responses:
+        200:
+          description: Shows all files
+          schema:
+            $ref: '#/definitions/File'
+
+        400:
+          description: No files in database
+          schema:
+            type: object
+            properties:
+              message:
+                type: string 
+                description: There are not stored files
+            
+    post:
+      summary: Uploads a file
+      description: Users uploads a file, system stores it and return a successful message
+      parameters:
+        - name: token
+          in: query
+          description: User's valid token
+          required: true
+          type: string
+        - name: file
+          in: formData
+          description: An arbitrary file
+          required: true
+          type: file
+
+      tags:
+        - Files
+      responses:
+        200:
+          description: File uploaded
+          schema:
+            type: object
+            properties:
+              message:
+                type: string 
+                description: The file has been uploaded successfully
+        400:
+          description: File is required
+          schema:
+            type: object
+            properties:
+              message:
+                type: string 
+                description: File is required
+                
+        409:
+          description: The content you are trying to upload already exist
+          schema:
+            type: object
+            properties:
+              message:
+                type: string 
+                description: The content already exist in file
+        422:
+          description: The filename you are providing is already in use
+          schema:
+            type: object
+            properties:
+              message:
+                type: string 
+                description: The filename is already in use
+                
+        419:
+          description: The filename you are providing is corrupt
+          schema:
+            type: object
+            properties:
+              message:
+                type: string 
+                description: Corrupt file, please try again'
+              
+  /files/id:
+    get:
+      summary: Downloads a certain file
+      description: Retrieves an arbitrary file by id.
+      parameters:
+        - name: token
+          in: query
+          description: User's valid token
+          required: true
+          type: string
+        - name: id
+          in: query
+          description: File's id
+          required: true
+          type: string
+      tags:
+        - Files
+      responses:
+        200:
+          description: Retrieves a file
+          schema:
+            type: object
+            properties:
+              data:
+                type: string
+                format: binary
+                description: Retrieves the target file
+        404:
+          description: File not found
+          schema:
+            type: object
+            properties:
+              message:
+                type: string 
+                description: File not found
+                
+    delete:
+      summary: Uploads a file
+      description: Users uploads a file, system stores it and return a successful message
+      parameters:
+        - name: token
+          in: query
+          description: User's valid token
+          required: true
+          type: string
+        - name: id
+          in: query
+          description: File's id you want to delete
+          required: true
+          type: string
+      tags:
+        - Files
+      responses:
+        200:
+          description: File deleted successful
+          schema:
+            type: object
+            properties:
+              message:
+                type: string 
+                description: The file has been removed successfully
+        404:
+          description: File not found
+          schema:
+            type: object
+            properties:
+              message:
+                type: string 
+                description: File not found
+                
+  /fil3s/name:
+    get:
+      summary: Downloads a certain file
+      description: Retrieves an arbitrary file by name.
+      parameters:
+        - name: token
+          in: query
+          description: User's valid token
+          required: true
+          type: string
+        - name: name
+          in: query
+          description: File's name
+          required: true
+          type: string
+      tags:
+        - Files
+      responses:
+        200:
+          description: Retrieves a file
+          schema:
+            type: object
+            properties:
+              data:
+                type: string
+                format: binary
+                description: Retrieves the target file
+        404:
+          description: File not found
+          schema:
+            type: object
+            properties:
+              message:
+                type: string 
+                description: File not found
+    delete:
+      summary: Deletes a file
+      description: Deletes a file by name
+      parameters:
+        - name: token
+          in: query
+          description: User's valid token
+          required: true
+          type: string
+        - name: name
+          in: query
+          description: File's name you want to delete
+          required: true
+          type: string
+      tags:
+        - Files
+      responses:
+        200:
+          description: File deleted successful
+          schema:
+            type: object
+            properties:
+              message:
+                type: string 
+                description: The file has been removed successfully
+        404:
+          description: File not found
+          schema:
+            type: object
+            properties:
+              message:
+                type: string 
+                description: File not found
+      
+
+        
+definitions:
+
+  File:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique identifier representing a specific file
+      name:
+        type: string
+        description: Display name of file.
+      mime_type:
+        type: string
+        description: File's mime type.
+
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: user's id
+      name:
+        type: string
+        description: First name of the user.
+      email:
+        type: string
+        description: Email address of the user
+    
+
+
+
