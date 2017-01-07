@@ -73,6 +73,7 @@ To install the API, follow the instructions:
 - Run these commands:
 	- php artisan key:generate
 	- php artisan migrate --seed
+    - php artisan storage:link
 	- composer install
 
 
