@@ -52,7 +52,7 @@ For basic usage you can use CURL or some webapp as POSTMAN.
 - `password: secret`
 
 
-### AUTHENTICATION
+### Authentication
 
 Use "auth" method for authentication
 
@@ -65,7 +65,7 @@ Use "auth" method for authentication
 }
 
 
-### GET FILES
+### Get files
 
 Use "files" method for listing all files
 
