@@ -22,19 +22,19 @@ To install the API, please follow the instructions:
 
 API is conformed by 8 routes:
 
-+--------+--------------------------------+--------------------------------------------------+
-| Method |          URI                   |                 ACTION                           |
-+--------+----------+---------------------+--------------------------------------------------+
-| POST   | api/v1/auth                    | User send credentials, app returns a valid token |
-| GET    | api/v1/auth/me                 | Shows user's information                         |
-| GET    | api/v1/files                   | Shows all the files stored                       |
-| POST   | api/v1/files                   | Uploads a certain file                           |
-| GET    | api/v1/files/{file}            | Retrieves a certain file by id                   |
-| DELETE | api/v1/files/{file}            | Deletes a certain file by id                     |
-+--------|---------EXTRA------------------+ -------------------------------------------------+
-| GET    | api/v1/fil3s/{fil3}            | Retrieves a certain file by name                 |
-| DELETE | api/v1/fil3s/{fil3}            | Deletes a certain file by name                   |
-+--------|--------------------------------+--------------------------------------------------+
+
+- POST    api/v1/auth                     User send credentials, app returns a valid token 
+- GET     api/v1/auth/me                  Shows user's information                         
+- GET     api/v1/files                    Shows all the files stored                       
+- POST    api/v1/files                    Uploads a certain file                           
+- GET     api/v1/files/{file}             Retrieves a certain file by id                   
+- DELETE  api/v1/files/{file}             Deletes a certain file by id                     
+
+Extra
+
+- GET     api/v1/fil3s/{fil3}             Retrieves a certain file by name                 
+- DELETE  api/v1/fil3s/{fil3}             Deletes a certain file by name                   
+
 
 For more detailed information, please read "6. API DOCS"
 
