@@ -1,40 +1,105 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+# FILE REST API v1.0
 
-## About Laravel
+This is a REST API for managing files. Before using the proper API, user must authenticate via credentials and use a valid token (JWT).
+Basically this application uploads, lists and deletes an uploaded file. In order to save some disk space, the application detects name, mime_type and the file's content (hashing it's content). If file content is identically to some other file stored in database , API rejects user's file (Sends a json response "The content you're trying to upload already exist").
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+## Setup
 
-## Learning Laravel
+To install the API, please follow the instructions:
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+- Please configure your web server to project's document root (public folder).
+- Copy an .env file form .env_example.
+- Run these commands:
+    `php artisan key:generate`
+    `php artisan migrate --seed`
+    `php artisan storage:link`
+    `composer install`
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+## Routes
 
-## Contributing
+API is conformed by 8 routes:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
++--------+--------------------------------+--------------------------------------------------+
+| Method |          URI                   |                 ACTION                           |
++--------+----------+---------------------+--------------------------------------------------+
+| POST   | api/v1/auth                    | User send credentials, app returns a valid token |
+| GET    | api/v1/auth/me                 | Shows user's information                         |
+| GET    | api/v1/files                   | Shows all the files stored                       |
+| POST   | api/v1/files                   | Uploads a certain file                           |
+| GET    | api/v1/files/{file}            | Retrieves a certain file by id                   |
+| DELETE | api/v1/files/{file}            | Deletes a certain file by id                     |
++--------|---------EXTRA------------------+ -------------------------------------------------+
+| GET    | api/v1/fil3s/{fil3}            | Retrieves a certain file by name                 |
+| DELETE | api/v1/fil3s/{fil3}            | Deletes a certain file by name                   |
++--------|--------------------------------+--------------------------------------------------+
 
-## Security Vulnerabilities
+For more detailed information, please read "6. API DOCS"
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
 
-## License
+## API Docs
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+Detailed API documentation was developed in Swagger. The swagger YAML file is included in the swagger directory (root project folder).
+
+You can use it in your swagger-ui application or use the online swagger editor (http://swagger.io/swagger-editor/). If you choose online swagger editor, please paste the swagger.yaml content into the editor. API will be displayed in HTML form.
+
+
+## Basic Usage
+
+For basic usage you can use CURL or some webapp as POSTMAN.
+
+### Credentials:
+
+`email: admin@admin.com`
+`password: secret`
+
+
+### AUTHENTICATION
+
+Use "auth" method for authentication
+
+- Your_host_name/api/v1/auth
+- Use "credentials" as form-data key-values pairs
+
+Response: A valid token. e.g 
+
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cL3phbG9yYS5hcHBcL2FwaVwvdjFcL2F1dGgiLCJpYXQiOjE0ODM4MTYzODksImV4cCI6MTQ4MzgxOTk4OSwibmJmIjoxNDgzODE2Mzg5LCJqdGkiOiJjZjRkMjI0OGU2MTFjMTEyYjRjYThiNTRiNzExNWNlNSJ9.ukXA40FQMfs6EVrdBngxhI5w-JJWkWQOF2N5N3__3e4"
+}
+
+----------------------------------------
+
+### GET FILES
+
+Use "files" method for listing all files
+
+- Your_host_name/api/v1/fil3s/php?token=eyJ0eXAiOiJKV1Qi
+- Use your valid token as url parameter.
+
+Response: All stored files.
+
+{
+    "data": [
+
+        {
+            "id": 20,
+            "name": "test.txt",
+            "mime_type": "text/plain"
+        },
+        {
+            "id": 21,
+            "name": "2",
+            "mime_type": "text/plain"
+        },
+        {
+            "id": 22,
+            "name": "php",
+            "mime_type": "text/x-c++"
+        }
+
+    ]
+}
+
+- Note: Use the other methods with the corresponding parameters to perform the desired actions
