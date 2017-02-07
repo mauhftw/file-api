@@ -26,8 +26,6 @@ Route::group(['prefix' => 'v1'], function () {
 	Route::resource('files','FileController',['only' => ['index','store','destroy','show']]);
 	Route::get('files/{file}', 'FileController@download')->name('files.download');
 
-	Route::get('fil3s/{fil3}','FileController@downloadByName')->name('files.download.by.name');
-	Route::delete('fil3s/{fil3}','FileController@deleteByName')->name('files.delete.by.name');
 
 });
 
