@@ -1,5 +1,5 @@
 
-# FILE REST API v1.0
+## FILE REST API v1.0
 
 This is a REST API for managing files. Before using the proper API, user must authenticate via credentials and use a valid token (JWT).
 Basically this application uploads, lists and deletes an uploaded file. In order to save some disk space, the application detects name, mime_type and the file's content (hashing it's content). If file content is identically to some other file stored in database , API rejects user's file (Sends a json response "The content you're trying to upload already exist").
@@ -30,10 +30,6 @@ API is conformed by 8 routes:
 - GET     `api/v1/files/{file}             Retrieves a certain file by id`                  
 - DELETE  `api/v1/files/{file}             Deletes a certain file by id`                     
 
-Extra
-
-- GET     api/v1/fil3s/{fil3}             Retrieves a certain file by name                 
-- DELETE  api/v1/fil3s/{fil3}             Deletes a certain file by name                   
 
 
 For more detailed information, please read "6. API DOCS"
@@ -63,7 +59,7 @@ Use "auth" method for authentication
 - Your_host_name/api/v1/auth
 - Use "credentials" as form-data key-values pairs
 
-Response: A valid token. e.g 
+- Response: A valid token. e.g 
 
 {
     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cL3phbG9yYS5hcHBcL2FwaVwvdjFcL2F1dGgiLCJpYXQiOjE0ODM4MTYzODksImV4cCI6MTQ4MzgxOTk4OSwibmJmIjoxNDgzODE2Mzg5LCJqdGkiOiJjZjRkMjI0OGU2MTFjMTEyYjRjYThiNTRiNzExNWNlNSJ9.ukXA40FQMfs6EVrdBngxhI5w-JJWkWQOF2N5N3__3e4"
@@ -78,7 +74,7 @@ Use "files" method for listing all files
 - Your_host_name/api/v1/fil3s/php?token=eyJ0eXAiOiJKV1Qi
 - Use your valid token as url parameter.
 
-Response: All stored files.
+- Response: All stored files.
 
 {
     "data": [
