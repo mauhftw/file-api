@@ -13,14 +13,14 @@ To install the API, please follow the instructions:
 - Please configure your web server to project's document root (public folder).
 - Copy an .env file form .env_example.
 - Run these commands:
-    `php artisan key:generate`
-    `php artisan migrate --seed`
-    `php artisan storage:link`
-    `composer install`
+    - `php artisan key:generate`
+    - `php artisan migrate --seed`
+    - `php artisan storage:link`
+    - `composer install`
 
 ## Routes
 
-API is conformed by 8 routes:
+API is conformed by 6 routes:
 
 
 - POST    `api/v1/auth                     User send credentials, app returns a valid token` 
@@ -32,7 +32,7 @@ API is conformed by 8 routes:
 
 
 
-For more detailed information, please read "6. API DOCS"
+For more detailed information, please read " API DOCS"
 
 
 ## API Docs
@@ -48,8 +48,8 @@ For basic usage you can use CURL or some webapp as POSTMAN.
 
 ### Credentials:
 
-`email: admin@admin.com`
-`password: secret`
+- `email: admin@admin.com`
+- `password: secret`
 
 
 ### AUTHENTICATION
@@ -65,7 +65,7 @@ Use "auth" method for authentication
     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cL3phbG9yYS5hcHBcL2FwaVwvdjFcL2F1dGgiLCJpYXQiOjE0ODM4MTYzODksImV4cCI6MTQ4MzgxOTk4OSwibmJmIjoxNDgzODE2Mzg5LCJqdGkiOiJjZjRkMjI0OGU2MTFjMTEyYjRjYThiNTRiNzExNWNlNSJ9.ukXA40FQMfs6EVrdBngxhI5w-JJWkWQOF2N5N3__3e4"
 }
 
-----------------------------------------
+
 
 ### GET FILES
 
