@@ -147,58 +147,6 @@ class FileController extends Controller {
 
     }
 
-
-
-
-//--------byName
-
-    public function deleteByName($name) {      
-
-        $file = File::where('name',$name)->first();
-
-        if (!$file) {
-            return response()->json([
-                'error' => ['message' => 'File not found']
-                ],404);
-        }
-
-        Storage::delete($file->path);
-        $file->delete();
-
-        return response()->json([
-               'message' => 'The file has been removed successfully'
-                ],200);
-
-       
-    }
-  
-
-    public function downloadByName($name) {     
-
-        $file = File::where('name',$name)->first();
-
-        if (!$file) {
-            return response()->json([
-                'error' => ['message' => 'File not found']
-                ],404);
-        }
-
-        $path = storage_path().'/app'.'/'.$file->path;
-
-        if (!$path) {
-            return response()->json([
-                'error' => ['message' => 'File not found']
-                ],404);
-        }
-
-
-        return response()->download($path);
-
-
-    }
-
-
-
 }
 
 
