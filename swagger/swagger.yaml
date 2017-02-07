@@ -1,10 +1,10 @@
 swagger: '2.0'
 info:
-  title: Zalora REST API
+  title: FILE REST API
   description: A REST API for managing files.-
   version: "1.0"
 # the domain of the service
-host: zalora.app
+host: api.app
 # array of all schemes that your API supports
 schemes:
   - http
@@ -232,77 +232,7 @@ paths:
                 type: string 
                 description: File not found
                 
-  /fil3s/name:
-    get:
-      summary: Downloads a certain file
-      description: Retrieves an arbitrary file by name.
-      parameters:
-        - name: token
-          in: query
-          description: User's valid token
-          required: true
-          type: string
-        - name: name
-          in: query
-          description: File's name
-          required: true
-          type: string
-      tags:
-        - Files
-      responses:
-        200:
-          description: Retrieves a file
-          schema:
-            type: object
-            properties:
-              data:
-                type: string
-                format: binary
-                description: Retrieves the target file
-        404:
-          description: File not found
-          schema:
-            type: object
-            properties:
-              message:
-                type: string 
-                description: File not found
-    delete:
-      summary: Deletes a file
-      description: Deletes a file by name
-      parameters:
-        - name: token
-          in: query
-          description: User's valid token
-          required: true
-          type: string
-        - name: name
-          in: query
-          description: File's name you want to delete
-          required: true
-          type: string
-      tags:
-        - Files
-      responses:
-        200:
-          description: File deleted successful
-          schema:
-            type: object
-            properties:
-              message:
-                type: string 
-                description: The file has been removed successfully
-        404:
-          description: File not found
-          schema:
-            type: object
-            properties:
-              message:
-                type: string 
-                description: File not found
-      
-
-        
+       
 definitions:
 
   File:
