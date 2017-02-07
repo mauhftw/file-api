@@ -58,13 +58,11 @@ Use "auth" method for authentication
 
 - Your_host_name/api/v1/auth
 - Use "credentials" as form-data key-values pairs
-
 - Response: A valid token. e.g 
 
-`{
+{
     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cL3phbG9yYS5hcHBcL2FwaVwvdjFcL2F1dGgiLCJpYXQiOjE0ODM4MTYzODksImV4cCI6MTQ4MzgxOTk4OSwibmJmIjoxNDgzODE2Mzg5LCJqdGkiOiJjZjRkMjI0OGU2MTFjMTEyYjRjYThiNTRiNzExNWNlNSJ9.ukXA40FQMfs6EVrdBngxhI5w-JJWkWQOF2N5N3__3e4"
 }
-`
 
 
 ### GET FILES
@@ -73,10 +71,9 @@ Use "files" method for listing all files
 
 - Your_host_name/api/v1/fil3s/php?token=eyJ0eXAiOiJKV1Qi
 - Use your valid token as url parameter.
-
 - Response: All stored files.
 
-`{
+{
     "data": [
 
         {
@@ -96,6 +93,6 @@ Use "files" method for listing all files
         }
 
     ]
-}`
+}
 
 - Note: Use the other methods with the corresponding parameters to perform the desired actions
